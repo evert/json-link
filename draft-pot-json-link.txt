@@ -72,7 +72,7 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
    This document is an attempt to define a standard JSON serialization
    for Web linking.  A primary goal is to define a format that's
-   relatively uncontroversial.
+   relatively uncontroversial and similar to existing serializations.
 
 2.  Format
 
@@ -140,11 +140,6 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
    this distinction.  The link title is always encoded using the "title"
    property.
 
-   A common example of this are documents that have a concept of
-   "embedded resources".  When a representation is a compound document,
-   the default link context might refer to the URI of the sub-resource
-   that is being embedded.
-
 2.1.5.  Extension Attributes
 
    Similar to [RFC8288], other documents may define new target
@@ -153,12 +148,17 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 2.1.6.  Example
 
-   This section is non-normative
+   This section is non-normative.
 
-   "json { "href": "https://evertpot.com/", "rel": "author", "title":
-   "Evert Pot" } "
+   {
+     "href": "https://evertpot.com/",
+     "rel": "author",
+     "title": "Evert Pot"
+   }
 
+2.2.  Lists of links
 
+   A list of links defined as a JSON array of one or more link objects.
 
 
 
@@ -170,14 +170,21 @@ Pot                       Expires July 2, 2020                  [Page 3]
 Internet-Draft     JSON serialization for Web Linking      December 2019
 
 
-2.2.  Lists of links
-
-   A list of links defined as a JSON array of one or more link objects.
-
 2.2.1.  Example
 
-   "json [ { "href": "https://evertpot.com/", "rel": "author", "title":
-   "Evert Pot" }, { "href": "https://test.example/", "rel": "self" } } "
+   This section is non-normative.
+
+   [
+     {
+       "href": "https://evertpot.com/",
+       "rel": "author",
+       "title": "Evert Pot"
+     },
+     {
+       "href": "https://test.example/",
+       "rel": "self"
+     }
+   }
 
 2.3.  Document-level links
 
@@ -197,9 +204,41 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 2.3.1.  Example
 
-   "json { "links": [ { "href": "https://evertpot.com/", "rel":
-   "author", "title": "Evert Pot" }, { "href": "https://test.example/",
-   "rel": "self" } ] } "
+   This section is non-normative.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pot                       Expires July 2, 2020                  [Page 4]
+
+Internet-Draft     JSON serialization for Web Linking      December 2019
+
+
+   {
+     "links": [
+       {
+         "href": "https://evertpot.com/",
+         "rel": "author",
+         "title": "Evert Pot"
+       },
+       {
+         "href": "https://test.example/",
+         "rel": "self"
+       }
+     ]
+   }
 
 3.  IANA considerations
 
@@ -216,15 +255,6 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
               Interchange Format", STD 90, RFC 8259,
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
-
-
-
-
-
-Pot                       Expires July 2, 2020                  [Page 4]
-
-Internet-Draft     JSON serialization for Web Linking      December 2019
-
 
    [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
               DOI 10.17487/RFC8288, October 2017,
@@ -244,6 +274,14 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
               Nottingham, M., "Home Documents for HTTP APIs", n.d.,
               <https://tools.ietf.org/html/draft-nottingham-json-home>.
 
+
+
+
+Pot                       Expires July 2, 2020                  [Page 5]
+
+Internet-Draft     JSON serialization for Web Linking      December 2019
+
+
    [JSON-API]
               "JSON:API", n.d., <https://jsonapi.org/format/>.
 
@@ -257,7 +295,20 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 Appendix A.  Typescript definitions
 
-   TBD
+   type Link = {
+     href: string,
+     rel: string,
+     anchor?: string,
+     hreflang?: string,
+     media?: string,
+     type?: string,
+   }
+
+   type LinkSet = Link[];
+
+   type DocumentLinks = {
+     links: LinkSet
+   }
 
 Appendix B.  JSON-SCHEMA definitions
 
@@ -277,4 +328,9 @@ Author's Address
 
 
 
-Pot                       Expires July 2, 2020                  [Page 5]
+
+
+
+
+
+Pot                       Expires July 2, 2020                  [Page 6]

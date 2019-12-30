@@ -64,7 +64,7 @@ serializations making it difficult to write generic parsers.
 
 This document is an attempt to define a standard JSON serialization for
 Web linking. A primary goal is to define a format that's relatively
-uncontroversial.
+uncontroversial and similar to existing serializations.
 
 # Format
 
@@ -122,10 +122,6 @@ alternative encoding for the `title` attribute.
 JSON only supports UTF-8 encoding. As such, it is not needed to make this
 distinction. The link title is always encoded using the `title` property.
 
-A common example of this are documents that have a concept of "embedded
-resources". When a representation is a compound document, the default link
-context might refer to the URI of the sub-resource that is being embedded.
-
 ### Extension Attributes
 
 Similar to {{RFC8288}}, other documents may define new target attributes
@@ -134,15 +130,15 @@ MUST ignore them.
 
 ### Example
 
-This section is non-normative
+This section is non-normative.
 
-```json
+~~~ json
 {
   "href": "https://evertpot.com/",
   "rel": "author",
   "title": "Evert Pot"
 }
-```
+~~~
 
 ## Lists of links {#list}
 
@@ -151,7 +147,9 @@ A list of links defined as a JSON array of one or more link objects.
 
 ### Example
 
-```json
+This section is non-normative.
+
+~~~ json
 [
   {
     "href": "https://evertpot.com/",
@@ -163,7 +161,7 @@ A list of links defined as a JSON array of one or more link objects.
     "rel": "self"
   }
 }
-```
+~~~
 
 ## Document-level links
 
@@ -182,7 +180,9 @@ the HTTP Link header and the document-level links via a unified interface.
 
 ### Example
 
-```json
+This section is non-normative.
+
+~~~ json
 {
   "links": [ 
     {
@@ -196,7 +196,7 @@ the HTTP Link header and the document-level links via a unified interface.
     }
   ]
 }
-```
+~~~
 
 # IANA considerations
 
@@ -209,7 +209,23 @@ TBD?
 
 # Typescript definitions
 
-TBD
+~~~ typescript
+type Link = {
+  href: string,
+  rel: string,
+  anchor?: string,
+  hreflang?: string,
+  media?: string,
+  type?: string,
+}
+
+type LinkSet = Link[];
+
+type DocumentLinks = {
+  links: LinkSet
+}
+~~~
+
 
 # JSON-SCHEMA definitions
 
