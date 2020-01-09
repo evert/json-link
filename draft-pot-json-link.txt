@@ -3,9 +3,10 @@
 
 
 Network Working Group                                             E. Pot
-Internet-Draft                                          January 09, 2020
-Intended status: Standards Track
-Expires: July 12, 2020
+Internet-Draft
+Intended status: Standards Track                              G. Sullice
+Expires: July 12, 2020                                      Acquia, Inc.
+                                                        January 09, 2020
 
 
                    JSON serialization for Web Linking
@@ -52,8 +53,7 @@ Copyright Notice
 
 
 
-
-Pot                       Expires July 12, 2020                 [Page 1]
+Pot & Sullice             Expires July 12, 2020                 [Page 1]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -109,7 +109,7 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 
-Pot                       Expires July 12, 2020                 [Page 2]
+Pot & Sullice             Expires July 12, 2020                 [Page 2]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -165,7 +165,7 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 
-Pot                       Expires July 12, 2020                 [Page 3]
+Pot & Sullice             Expires July 12, 2020                 [Page 3]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -221,7 +221,7 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 
-Pot                       Expires July 12, 2020                 [Page 4]
+Pot & Sullice             Expires July 12, 2020                 [Page 4]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -277,7 +277,7 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 
-Pot                       Expires July 12, 2020                 [Page 5]
+Pot & Sullice             Expires July 12, 2020                 [Page 5]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -333,7 +333,7 @@ B.1.  Link
 
 
 
-Pot                       Expires July 12, 2020                 [Page 6]
+Pot & Sullice             Expires July 12, 2020                 [Page 6]
 
 Internet-Draft     JSON serialization for Web Linking       January 2020
 
@@ -374,7 +374,7 @@ Appendix C.  Changelog
 
 C.1.  Changes since -??
 
-Author's Address
+Authors' Addresses
 
    Evert Pot
 
@@ -389,4 +389,60 @@ Author's Address
 
 
 
-Pot                       Expires July 12, 2020                 [Page 7]
+Pot & Sullice             Expires July 12, 2020                 [Page 7]
+
+Internet-Draft     JSON serialization for Web Linking       January 2020
+
+
+   Gabriel Sullice
+   Acquia, Inc.
+
+   Email: gabriel@sullice.com
+   URI:   https://sullice.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pot & Sullice             Expires July 12, 2020                 [Page 8]
