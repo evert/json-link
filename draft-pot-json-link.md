@@ -73,7 +73,7 @@ This document is an attempt to define a standard JSON serialization for
 Web linking. A primary goal is to define a format that's relatively
 uncontroversial and similar to existing serializations.
 
-Furthermore, this specification defines an optional formats for groups
+Furthermore, this specification defines an optional format for groups
 of links and a recommendation for defining document-wide links.
 
 # Format
@@ -107,7 +107,7 @@ specification alters the behavior of anchor. By default, if anchor is not
 specified the link context is considered to be the URL of the representation
 it is associated with.
 
-If the link appears alongside a link relationship with relation type 'self'
+If the link appears alongside a link with the 'self' relation type
 (for example in {{list}} of links, the target of the self link MUST be used
 as the default link context, unless the anchor attribute is defined.
 
