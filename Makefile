@@ -1,6 +1,11 @@
 DRAFT_NAME:=draft-pot-json-link
 
-all: $(DRAFT_NAME).txt
+.PHONY:all
+all: $(DRAFT_NAME).xml $(DRAFT_NAME).txt
+
+.PHONY:clean
+clean:
+	rm $(DRAFT_NAME).xml $(DRAFT_NAME).txt
 
 $(DRAFT_NAME).xml: $(DRAFT_NAME).md
 	kramdown-rfc2629 $(DRAFT_NAME).md > $(DRAFT_NAME).xml

@@ -3,13 +3,13 @@
 
 
 Network Working Group                                             E. Pot
-Internet-Draft                                         December 30, 2019
+Internet-Draft                                          January 09, 2020
 Intended status: Standards Track
-Expires: July 2, 2020
+Expires: July 12, 2020
 
 
                    JSON serialization for Web Linking
-                         draft-pot-json-link-00
+                         draft-pot-json-link-01
 
 Abstract
 
@@ -31,11 +31,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 2, 2020.
+   This Internet-Draft will expire on July 12, 2020.
 
 Copyright Notice
 
-   Copyright (c) 2019 IETF Trust and the persons identified as the
+   Copyright (c) 2020 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Pot                       Expires July 2, 2020                  [Page 1]
+Pot                       Expires July 12, 2020                 [Page 1]
 
-Internet-Draft     JSON serialization for Web Linking      December 2019
+Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 1.  Introduction
@@ -65,14 +65,18 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
    [JSON-API], [WEBTHING], [draft-nottingham-json-home],
    [COLLECTIONJSON], [SIREN] and many others.
 
-   Typically when new formats requiring links are defined, there is no
-   common reference to build on.  This often results in minor
-   differences between serializations making it difficult to write
-   generic parsers.
+   Because there hasn't been an accepted reference for serializing Web
+   Links in JSON, it's typical for authors of new formats to invent
+   their own.  This has resulted in many minor differences between
+   serializations, making it difficult to write generic parsers.
 
    This document is an attempt to define a standard JSON serialization
    for Web linking.  A primary goal is to define a format that's
-   relatively uncontroversial.
+   relatively uncontroversial and similar to existing serializations.
+
+   Furthermore, this specification defines an optional formats for
+   groups of links and a recommendation for defining document-wide
+   links.
 
 2.  Format
 
@@ -98,6 +102,18 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
    The property is required and must be specified as a string.
 
+
+
+
+
+
+
+
+Pot                       Expires July 12, 2020                 [Page 2]
+
+Internet-Draft     JSON serialization for Web Linking       January 2020
+
+
 2.1.3.  anchor
 
    The "anchor" attribute is defined in Section 3.2 of [RFC8288].  This
@@ -105,18 +121,10 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
    is not specified the link context is considered to be the URL of the
    representation it is associated with.
 
-
-
-
-
-Pot                       Expires July 2, 2020                  [Page 2]
-
-Internet-Draft     JSON serialization for Web Linking      December 2019
-
-
-   If the link appears in a list of links (defined in Section 2.2), and
-   the list contains a link with relation type 'self', the target of the
-   self link MUST be used as the default link context.
+   If the link appears alongside a link relationship with relation type
+   'self' (for example in Section 2.2 of links, the target of the self
+   link MUST be used as the default link context, unless the anchor
+   attribute is defined.
 
    If the link is not part of a list of links that has a link relation
    of type 'self', the default behavior is to use the URL of the
@@ -140,11 +148,6 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
    this distinction.  The link title is always encoded using the "title"
    property.
 
-   A common example of this are documents that have a concept of
-   "embedded resources".  When a representation is a compound document,
-   the default link context might refer to the URI of the sub-resource
-   that is being embedded.
-
 2.1.5.  Extension Attributes
 
    Similar to [RFC8288], other documents may define new target
@@ -153,10 +156,7 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 2.1.6.  Example
 
-   This section is non-normative
-
-   "json { "href": "https://evertpot.com/", "rel": "author", "title":
-   "Evert Pot" } "
+   This section is non-normative.
 
 
 
@@ -165,19 +165,37 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 
 
-Pot                       Expires July 2, 2020                  [Page 3]
+Pot                       Expires July 12, 2020                 [Page 3]
 
-Internet-Draft     JSON serialization for Web Linking      December 2019
+Internet-Draft     JSON serialization for Web Linking       January 2020
 
+
+   {
+     "href": "https://evertpot.com/",
+     "rel": "author",
+     "title": "Evert Pot"
+   }
 
 2.2.  Lists of links
 
-   A list of links defined as a JSON array of one or more link objects.
+   Authors that wish to encode a set of links in a document, SHOULD use
+   an array of links.
 
 2.2.1.  Example
 
-   "json [ { "href": "https://evertpot.com/", "rel": "author", "title":
-   "Evert Pot" }, { "href": "https://test.example/", "rel": "self" } } "
+   This section is non-normative.
+
+   [
+     {
+       "href": "https://evertpot.com/",
+       "rel": "author",
+       "title": "Evert Pot"
+     },
+     {
+       "href": "https://test.example/",
+       "rel": "self"
+     }
+   }
 
 2.3.  Document-level links
 
@@ -197,9 +215,30 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 2.3.1.  Example
 
-   "json { "links": [ { "href": "https://evertpot.com/", "rel":
-   "author", "title": "Evert Pot" }, { "href": "https://test.example/",
-   "rel": "self" } ] } "
+   This section is non-normative.
+
+
+
+
+
+Pot                       Expires July 12, 2020                 [Page 4]
+
+Internet-Draft     JSON serialization for Web Linking       January 2020
+
+
+   {
+     "links": [
+       {
+         "href": "https://evertpot.com/",
+         "rel": "author",
+         "title": "Evert Pot"
+       },
+       {
+         "href": "https://test.example/",
+         "rel": "self"
+       }
+     ]
+   }
 
 3.  IANA considerations
 
@@ -216,15 +255,6 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
               Interchange Format", STD 90, RFC 8259,
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
-
-
-
-
-
-Pot                       Expires July 2, 2020                  [Page 4]
-
-Internet-Draft     JSON serialization for Web Linking      December 2019
-
 
    [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
               DOI 10.17487/RFC8288, October 2017,
@@ -244,6 +274,14 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
               Nottingham, M., "Home Documents for HTTP APIs", n.d.,
               <https://tools.ietf.org/html/draft-nottingham-json-home>.
 
+
+
+
+Pot                       Expires July 12, 2020                 [Page 5]
+
+Internet-Draft     JSON serialization for Web Linking       January 2020
+
+
    [JSON-API]
               "JSON:API", n.d., <https://jsonapi.org/format/>.
 
@@ -257,11 +295,80 @@ Internet-Draft     JSON serialization for Web Linking      December 2019
 
 Appendix A.  Typescript definitions
 
-   TBD
+   type Link = {
+     href: string,
+     rel: string,
+     anchor?: string,
+     hreflang?: string,
+     media?: string,
+     type?: string,
+   }
+
+   type LinkSet = Link[];
+
+   type DocumentLinks = {
+     links: LinkSet
+   }
 
 Appendix B.  JSON-SCHEMA definitions
 
-   TBD
+B.1.  Link
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pot                       Expires July 12, 2020                 [Page 6]
+
+Internet-Draft     JSON serialization for Web Linking       January 2020
+
+
+   {
+     "$schema": "http://json-schema.org/draft-07/schema#",
+     "$id": "...",
+     "type": "object",
+     "additionalProperties": true,
+     "required": [
+       "href",
+       "rel"
+     ],
+     "properties": {
+       "href": {
+         "type": "string",
+         "format":"uri-reference"
+       },
+       "rel": {
+         "type": "string",
+       },
+       "title": {
+         "type": "string"
+       },
+       "type": {
+         "type": "string"
+       },
+       "hreflang": {
+         "type": "string",
+       },
+       "media": {
+         "type": "string"
+       }
+     }
+   }
 
 Appendix C.  Changelog
 
@@ -277,4 +384,9 @@ Author's Address
 
 
 
-Pot                       Expires July 2, 2020                  [Page 5]
+
+
+
+
+
+Pot                       Expires July 12, 2020                 [Page 7]

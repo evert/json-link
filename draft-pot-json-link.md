@@ -1,7 +1,7 @@
 ---
-date: 2019-12-30
+date: 2020-01-09
 title: "JSON serialization for Web Linking"
-docname: draft-pot-json-link-00
+docname: draft-pot-json-link-01
 category: std
 author:
  -
@@ -58,13 +58,17 @@ express a link. Examples can be found in {{draft-kelly-json-hal}}, {{JSON-API}},
 {{WEBTHING}}, {{draft-nottingham-json-home}}, {{COLLECTIONJSON}}, {{SIREN}} 
 and many others.
 
-Typically when new formats requiring links are defined, there is no common
-reference to build on. This often results in minor differences between
-serializations making it difficult to write generic parsers.
+Because there hasn't been an accepted reference for serializing Web Links in
+JSON, it's typical for authors of new formats to invent their own. This has
+resulted in many minor differences between serializations, making it difficult
+to write generic parsers.
 
 This document is an attempt to define a standard JSON serialization for
 Web linking. A primary goal is to define a format that's relatively
-uncontroversial.
+uncontroversial and similar to existing serializations.
+
+Furthermore, this specification defines an optional formats for groups
+of links and a recommendation for defining document-wide links.
 
 # Format
 
@@ -97,9 +101,9 @@ specification alters the behavior of anchor. By default, if anchor is not
 specified the link context is considered to be the URL of the representation
 it is associated with.
 
-If the link appears in a list of links (defined in {{list}}), and the list
-contains a link with relation type 'self', the target of the self link MUST
-be used as the default link context.
+If the link appears alongside a link relationship with relation type 'self'
+(for example in {{list}} of links, the target of the self link MUST be used
+as the default link context, unless the anchor attribute is defined.
 
 If the link is not part of a list of links that has a link relation of type
 'self', the default behavior is to use the URL of the representation it's
@@ -122,10 +126,6 @@ alternative encoding for the `title` attribute.
 JSON only supports UTF-8 encoding. As such, it is not needed to make this
 distinction. The link title is always encoded using the `title` property.
 
-A common example of this are documents that have a concept of "embedded
-resources". When a representation is a compound document, the default link
-context might refer to the URI of the sub-resource that is being embedded.
-
 ### Extension Attributes
 
 Similar to {{RFC8288}}, other documents may define new target attributes
@@ -134,24 +134,27 @@ MUST ignore them.
 
 ### Example
 
-This section is non-normative
+This section is non-normative.
 
-```json
+~~~ json
 {
   "href": "https://evertpot.com/",
   "rel": "author",
   "title": "Evert Pot"
 }
-```
+~~~
 
 ## Lists of links {#list}
 
-A list of links defined as a JSON array of one or more link objects.
+Authors that wish to encode a set of links in a document, SHOULD use an array
+of links.
 
 
 ### Example
 
-```json
+This section is non-normative.
+
+~~~ json
 [
   {
     "href": "https://evertpot.com/",
@@ -163,7 +166,7 @@ A list of links defined as a JSON array of one or more link objects.
     "rel": "self"
   }
 }
-```
+~~~
 
 ## Document-level links
 
@@ -182,7 +185,9 @@ the HTTP Link header and the document-level links via a unified interface.
 
 ### Example
 
-```json
+This section is non-normative.
+
+~~~ json
 {
   "links": [ 
     {
@@ -196,7 +201,7 @@ the HTTP Link header and the document-level links via a unified interface.
     }
   ]
 }
-```
+~~~
 
 # IANA considerations
 
@@ -209,11 +214,62 @@ TBD?
 
 # Typescript definitions
 
-TBD
+~~~ typescript
+type Link = {
+  href: string,
+  rel: string,
+  anchor?: string,
+  hreflang?: string,
+  media?: string,
+  type?: string,
+}
+
+type LinkSet = Link[];
+
+type DocumentLinks = {
+  links: LinkSet
+}
+~~~
+
 
 # JSON-SCHEMA definitions
 
-TBD
+## Link
+
+~~~ json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "...",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "href",
+    "rel"
+  ],
+  "properties": {
+    "href": {
+      "type": "string",
+      "format":"uri-reference"
+    },
+    "rel": {
+      "type": "string",
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "hreflang": {
+      "type": "string",
+    },
+    "media": {
+      "type": "string"
+    }
+  }
+}
+~~~
+
 
 # Changelog
 

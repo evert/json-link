@@ -8,7 +8,7 @@
 ]>
 
 
-<rfc docName="draft-pot-json-link-00" category="std">
+<rfc docName="draft-pot-json-link-01" category="std">
 
   <front>
     <title>JSON serialization for Web Linking</title>
@@ -21,7 +21,7 @@
       </address>
     </author>
 
-    <date year="2019" month="December" day="30"/>
+    <date year="2020" month="January" day="09"/>
 
     
     
@@ -50,13 +50,17 @@ express a link. Examples can be found in <xref target="draft-kelly-json-hal"/>, 
 <xref target="WEBTHING"/>, <xref target="draft-nottingham-json-home"/>, <xref target="COLLECTIONJSON"/>, <xref target="SIREN"/> 
 and many others.</t>
 
-<t>Typically when new formats requiring links are defined, there is no common
-reference to build on. This often results in minor differences between
-serializations making it difficult to write generic parsers.</t>
+<t>Because there hasn’t been an accepted reference for serializing Web Links in
+JSON, it’s typical for authors of new formats to invent their own. This has
+resulted in many minor differences between serializations, making it difficult
+to write generic parsers.</t>
 
 <t>This document is an attempt to define a standard JSON serialization for
 Web linking. A primary goal is to define a format that’s relatively
-uncontroversial.</t>
+uncontroversial and similar to existing serializations.</t>
+
+<t>Furthermore, this specification defines an optional formats for groups
+of links and a recommendation for defining document-wide links.</t>
 
 </section>
 <section anchor="format" title="Format">
@@ -92,9 +96,9 @@ specification alters the behavior of anchor. By default, if anchor is not
 specified the link context is considered to be the URL of the representation
 it is associated with.</t>
 
-<t>If the link appears in a list of links (defined in <xref target="list"/>), and the list
-contains a link with relation type ‘self’, the target of the self link MUST
-be used as the default link context.</t>
+<t>If the link appears alongside a link relationship with relation type ‘self’
+(for example in <xref target="list"/> of links, the target of the self link MUST be used
+as the default link context, unless the anchor attribute is defined.</t>
 
 <t>If the link is not part of a list of links that has a link relation of type
 ‘self’, the default behavior is to use the URL of the representation it’s
@@ -118,10 +122,6 @@ alternative encoding for the <spanx style="verb">title</spanx> attribute.</t>
 <t>JSON only supports UTF-8 encoding. As such, it is not needed to make this
 distinction. The link title is always encoded using the <spanx style="verb">title</spanx> property.</t>
 
-<t>A common example of this are documents that have a concept of “embedded
-resources”. When a representation is a compound document, the default link
-context might refer to the URI of the sub-resource that is being embedded.</t>
-
 </section>
 <section anchor="extension-attributes" title="Extension Attributes">
 
@@ -132,25 +132,28 @@ MUST ignore them.</t>
 </section>
 <section anchor="example" title="Example">
 
-<t>This section is non-normative</t>
+<t>This section is non-normative.</t>
 
-<t><spanx style="verb">json
+<figure><artwork type="json"><![CDATA[
 {
   "href": "https://evertpot.com/",
   "rel": "author",
   "title": "Evert Pot"
 }
-</spanx></t>
+]]></artwork></figure>
 
 </section>
 </section>
 <section anchor="list" title="Lists of links">
 
-<t>A list of links defined as a JSON array of one or more link objects.</t>
+<t>Authors that wish to encode a set of links in a document, SHOULD use an array
+of links.</t>
 
 <section anchor="example-1" title="Example">
 
-<t><spanx style="verb">json
+<t>This section is non-normative.</t>
+
+<figure><artwork type="json"><![CDATA[
 [
   {
     "href": "https://evertpot.com/",
@@ -162,7 +165,7 @@ MUST ignore them.</t>
     "rel": "self"
   }
 }
-</spanx></t>
+]]></artwork></figure>
 
 </section>
 </section>
@@ -183,7 +186,9 @@ the HTTP Link header and the document-level links via a unified interface.</t>
 
 <section anchor="example-2" title="Example">
 
-<t><spanx style="verb">json
+<t>This section is non-normative.</t>
+
+<figure><artwork type="json"><![CDATA[
 {
   "links": [ 
     {
@@ -197,7 +202,7 @@ the HTTP Link header and the document-level links via a unified interface.</t>
     }
   ]
 }
-</spanx></t>
+]]></artwork></figure>
 
 </section>
 </section>
@@ -287,13 +292,63 @@ wishing to implement this spec.</t>
 
 <section anchor="typescript-definitions" title="Typescript definitions">
 
-<t>TBD</t>
+<figure><artwork type="typescript"><![CDATA[
+type Link = {
+  href: string,
+  rel: string,
+  anchor?: string,
+  hreflang?: string,
+  media?: string,
+  type?: string,
+}
+
+type LinkSet = Link[];
+
+type DocumentLinks = {
+  links: LinkSet
+}
+]]></artwork></figure>
 
 </section>
 <section anchor="json-schema-definitions" title="JSON-SCHEMA definitions">
 
-<t>TBD</t>
+<section anchor="link" title="Link">
 
+<figure><artwork type="json"><![CDATA[
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "...",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "href",
+    "rel"
+  ],
+  "properties": {
+    "href": {
+      "type": "string",
+      "format":"uri-reference"
+    },
+    "rel": {
+      "type": "string",
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "hreflang": {
+      "type": "string",
+    },
+    "media": {
+      "type": "string"
+    }
+  }
+}
+]]></artwork></figure>
+
+</section>
 </section>
 <section anchor="changelog" title="Changelog">
 
@@ -306,57 +361,62 @@ wishing to implement this spec.</t>
   </back>
 
 <!-- ##markdown-source:
-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
-evdO/AVlfv9yMRYAAA==
+H4sIAOuUF14AA6VYf2/bOBL9n5+CcBfI4dZ2ut0rrvVh0UvT9JLb9AfqFItD
+sUAYiba5lUQtScXxBulnvzdDSpYSu9e7KxBUpqjhzJs3b0aaTCYiV0HP5JPH
+Tx5PHv8wefxcBBMKrIz+OX/3VnrtjCrMHyoYW8mFdfIXfSXPTfXZVMuRyG1W
+qRK7c6cWYVLbMPnN22pSYAPMiQzGl9ZtZtKHXKgmrKybCTkREv9M5WfyZCrf
+28C/o6WTa+1Ct6ZLZYqZLPXfNa3jgGlmS77VODOTqxBqPzs87N89FJV1JTy+
+1jhLfnh9/OzJs2fd5dPnM2GqRX9L9L6yISCqlSpjECtb8l0pg3JLHbanBWsL
+PzU6LKbWLQ9XoSwO99uIJiKqp/gtX9msKXUVPAN6enHxXh69P/O8r8NIdhCN
+3kzl287uqPP3sy6KTTpGFf+tp8On+z5y4k83NRDVN0EezdZ1XZgsUuBcVctG
+LfU+Z+Hrz2Q5reHQmZwH0KDQniIk4xNEu9tdckfVhn2NGTrse8acnOFpAuGX
+k5cXp2dv/7HbkgEXSvuHKQrF1tb2nini8cUKmMpkrwtH9uN5qSv52qkqM74f
+0ptoWh5bV1vH0OD28bvz85Pji7N3b9nRB47BL1U2Ve51xUQtdW7UJABqf5jZ
+otAZGdoZ+XF3+3uyPdqLv/ms5VE6BDfmZx9OdnhCEC1NWDVX7MhnfY2n1+ZK
+u0NvHD+5PXtOKzOp5IpIwU5LX+vMLFpWEI+drp3GocRTSf8Fo/1eP3+mE+Wc
+jxRiMplIdeWDU1kQAmnx9w7I9cJU2sOHoSLZRV+Q5O1tqva7Oxwjw0oLZnNa
+f/oc6xHdaTy0NHleaCEeybMqOJs3DDG5oJ2WCn+lqjaRtVfK6xxCpqpcuRy+
+VHky5nGSCkDg9wZQ0bGy0tgbrNA3hAo5Tpo4lSc3qqxRCzJTlbzSMIBUka+3
+t7vq8u5ujDtt0eCXuL1tiR/v7dedeH/IybjGpAAUgkLgAC18dh6gvNSZajzH
+gEhWylcHAX6iCuCvyjJdBwTm9AK3q0xz5tuUUAbabHjExNiPpQkHAGhTI5cF
+74908JS8Sq+3GFo8cw3m0OHGSbuuppK5ADcEUGwKOhtYsculgczL3CySKx5u
+hjV5OqCIH2M7k8ME3m0y2BE4bO1M0HKpK2zPZK2cjxDwkXnSaGk8Rx6CLutA
+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
+EP8GyrGVN3sZAAA=
 
 -->
 
