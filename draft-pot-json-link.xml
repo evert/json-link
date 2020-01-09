@@ -8,7 +8,7 @@
 ]>
 
 
-<rfc docName="draft-pot-json-link-00" category="std">
+<rfc docName="draft-pot-json-link-01" category="std">
 
   <front>
     <title>JSON serialization for Web Linking</title>
@@ -21,7 +21,7 @@
       </address>
     </author>
 
-    <date year="2019" month="December" day="30"/>
+    <date year="2020" month="January" day="09"/>
 
     
     
@@ -50,13 +50,17 @@ express a link. Examples can be found in <xref target="draft-kelly-json-hal"/>, 
 <xref target="WEBTHING"/>, <xref target="draft-nottingham-json-home"/>, <xref target="COLLECTIONJSON"/>, <xref target="SIREN"/> 
 and many others.</t>
 
-<t>Typically when new formats requiring links are defined, there is no common
-reference to build on. This often results in minor differences between
-serializations making it difficult to write generic parsers.</t>
+<t>Because there hasn’t been an accepted reference for serializing Web Links in
+JSON, it’s typical for authors of new formats to invent their own. This has
+resulted in many minor differences between serializations, making it difficult
+to write generic parsers.</t>
 
 <t>This document is an attempt to define a standard JSON serialization for
 Web linking. A primary goal is to define a format that’s relatively
 uncontroversial and similar to existing serializations.</t>
+
+<t>Furthermore, this specification defines an optional formats for groups
+of links and a recommendation for defining document-wide links.</t>
 
 </section>
 <section anchor="format" title="Format">
@@ -92,9 +96,9 @@ specification alters the behavior of anchor. By default, if anchor is not
 specified the link context is considered to be the URL of the representation
 it is associated with.</t>
 
-<t>If the link appears in a list of links (defined in <xref target="list"/>), and the list
-contains a link with relation type ‘self’, the target of the self link MUST
-be used as the default link context.</t>
+<t>If the link appears alongside a link relationship with relation type ‘self’
+(for example in <xref target="list"/> of links, the target of the self link MUST be used
+as the default link context, unless the anchor attribute is defined.</t>
 
 <t>If the link is not part of a list of links that has a link relation of type
 ‘self’, the default behavior is to use the URL of the representation it’s
@@ -142,7 +146,8 @@ MUST ignore them.</t>
 </section>
 <section anchor="list" title="Lists of links">
 
-<t>A list of links defined as a JSON array of one or more link objects.</t>
+<t>Authors that wish to encode a set of links in a document, SHOULD use an array
+of links.</t>
 
 <section anchor="example-1" title="Example">
 
@@ -307,8 +312,43 @@ type DocumentLinks = {
 </section>
 <section anchor="json-schema-definitions" title="JSON-SCHEMA definitions">
 
-<t>TBD</t>
+<section anchor="link" title="Link">
 
+<figure><artwork type="json"><![CDATA[
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "...",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "href",
+    "rel"
+  ],
+  "properties": {
+    "href": {
+      "type": "string",
+      "format":"uri-reference"
+    },
+    "rel": {
+      "type": "string",
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "hreflang": {
+      "type": "string",
+    },
+    "media": {
+      "type": "string"
+    }
+  }
+}
+]]></artwork></figure>
+
+</section>
 </section>
 <section anchor="changelog" title="Changelog">
 
@@ -321,57 +361,62 @@ type DocumentLinks = {
   </back>
 
 <!-- ##markdown-source:
-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
-4j8XC1JNihYAAA==
+H4sIAOuUF14AA6VYf2/bOBL9n5+CcBfI4dZ2ut0rrvVh0UvT9JLb9AfqFItD
+sUAYiba5lUQtScXxBulnvzdDSpYSu9e7KxBUpqjhzJs3b0aaTCYiV0HP5JPH
+Tx5PHv8wefxcBBMKrIz+OX/3VnrtjCrMHyoYW8mFdfIXfSXPTfXZVMuRyG1W
+qRK7c6cWYVLbMPnN22pSYAPMiQzGl9ZtZtKHXKgmrKybCTkREv9M5WfyZCrf
+28C/o6WTa+1Ct6ZLZYqZLPXfNa3jgGlmS77VODOTqxBqPzs87N89FJV1JTy+
+1jhLfnh9/OzJs2fd5dPnM2GqRX9L9L6yISCqlSpjECtb8l0pg3JLHbanBWsL
+PzU6LKbWLQ9XoSwO99uIJiKqp/gtX9msKXUVPAN6enHxXh69P/O8r8NIdhCN
+3kzl287uqPP3sy6KTTpGFf+tp8On+z5y4k83NRDVN0EezdZ1XZgsUuBcVctG
+LfU+Z+Hrz2Q5reHQmZwH0KDQniIk4xNEu9tdckfVhn2NGTrse8acnOFpAuGX
+k5cXp2dv/7HbkgEXSvuHKQrF1tb2nini8cUKmMpkrwtH9uN5qSv52qkqM74f
+0ptoWh5bV1vH0OD28bvz85Pji7N3b9nRB47BL1U2Ve51xUQtdW7UJABqf5jZ
+otAZGdoZ+XF3+3uyPdqLv/ms5VE6BDfmZx9OdnhCEC1NWDVX7MhnfY2n1+ZK
+u0NvHD+5PXtOKzOp5IpIwU5LX+vMLFpWEI+drp3GocRTSf8Fo/1eP3+mE+Wc
+jxRiMplIdeWDU1kQAmnx9w7I9cJU2sOHoSLZRV+Q5O1tqva7Oxwjw0oLZnNa
+f/oc6xHdaTy0NHleaCEeybMqOJs3DDG5oJ2WCn+lqjaRtVfK6xxCpqpcuRy+
+VHky5nGSCkDg9wZQ0bGy0tgbrNA3hAo5Tpo4lSc3qqxRCzJTlbzSMIBUka+3
+t7vq8u5ujDtt0eCXuL1tiR/v7dedeH/IybjGpAAUgkLgAC18dh6gvNSZajzH
+gEhWylcHAX6iCuCvyjJdBwTm9AK3q0xz5tuUUAbabHjExNiPpQkHAGhTI5cF
+74908JS8Sq+3GFo8cw3m0OHGSbuuppK5ADcEUGwKOhtYsculgczL3CySKx5u
+hjV5OqCIH2M7k8ME3m0y2BE4bO1M0HKpK2zPZK2cjxDwkXnSaGk8Rx6CLutA
+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
+EP8GyrGVN3sZAAA=
 
 -->
 
