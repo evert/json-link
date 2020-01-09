@@ -9,6 +9,12 @@ author:
     name: Evert Pot
     email: me@evertpot.com
     uri: https://evertpot.com/
+ -
+    ins: G. Sullice
+    name: Gabriel Sullice
+    email: gabriel@sullice.com
+    uri: https://sullice.com
+    organization: Acquia, Inc.
 normative:
   RFC8288:
   RFC8259:
