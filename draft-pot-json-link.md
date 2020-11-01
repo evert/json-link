@@ -1,7 +1,7 @@
 ---
-date: 2020-01-09
+date: 2020-11-01
 title: "JSON serialization for Web Linking"
-docname: draft-pot-json-link-01
+docname: draft-pot-json-link-02
 category: std
 author:
  -
@@ -49,6 +49,16 @@ informative:
     title: "Siren: a hypermedia specification for representing entities"
     author:
       ins: Kevin Swiber
+pi:
+  toc: yes
+  tocindent: yes
+  sortrefs: yes
+  symrefs: yes
+  strict: yes
+  compact: yes
+  comments: yes
+  inline: yes
+  tocdepth: 3
 
 --- abstract
 

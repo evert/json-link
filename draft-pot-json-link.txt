@@ -5,12 +5,12 @@
 Network Working Group                                             E. Pot
 Internet-Draft
 Intended status: Standards Track                              G. Sullice
-Expires: July 12, 2020                                      Acquia, Inc.
-                                                        January 09, 2020
+Expires: May 5, 2021                                        Acquia, Inc.
+                                                       November 01, 2020
 
 
                    JSON serialization for Web Linking
-                         draft-pot-json-link-01
+                         draft-pot-json-link-02
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 12, 2020.
+   This Internet-Draft will expire on May 5, 2021.
 
 Copyright Notice
 
@@ -53,10 +53,36 @@ Copyright Notice
 
 
 
-Pot & Sullice             Expires July 12, 2020                 [Page 1]
+Pot & Sullice              Expires May 5, 2021                  [Page 1]
 
-Internet-Draft     JSON serialization for Web Linking       January 2020
+Internet-Draft     JSON serialization for Web Linking      November 2020
 
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Format  . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  The link object.  . . . . . . . . . . . . . . . . . . . .   3
+       2.1.1.  rel . . . . . . . . . . . . . . . . . . . . . . . . .   3
+       2.1.2.  href  . . . . . . . . . . . . . . . . . . . . . . . .   3
+       2.1.3.  anchor  . . . . . . . . . . . . . . . . . . . . . . .   3
+       2.1.4.  Other attributes  . . . . . . . . . . . . . . . . . .   4
+       2.1.5.  Extension Attributes  . . . . . . . . . . . . . . . .   4
+       2.1.6.  Example . . . . . . . . . . . . . . . . . . . . . . .   4
+     2.2.  Lists of links  . . . . . . . . . . . . . . . . . . . . .   4
+       2.2.1.  Example . . . . . . . . . . . . . . . . . . . . . . .   4
+     2.3.  Document-level links  . . . . . . . . . . . . . . . . . .   5
+       2.3.1.  Example . . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  IANA considerations . . . . . . . . . . . . . . . . . . . . .   6
+   4.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     4.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
+     4.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Typescript definitions . . . . . . . . . . . . . . .   7
+   Appendix B.  JSON-SCHEMA definitions  . . . . . . . . . . . . . .   7
+     B.1.  Link  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Appendix C.  Changelog  . . . . . . . . . . . . . . . . . . . . .   8
+     C.1.  Changes since -?? . . . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -76,6 +102,17 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
    Furthermore, this specification defines an optional format for groups
    of links and a recommendation for defining document-wide links.
+
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 2]
+
+Internet-Draft     JSON serialization for Web Linking      November 2020
+
 
 2.  Format
 
@@ -105,15 +142,6 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
    The "anchor" attribute is defined in Section 3.2 of [RFC8288].  This
    specification alters the behavior of anchor.  By default, if anchor
-
-
-
-
-Pot & Sullice             Expires July 12, 2020                 [Page 2]
-
-Internet-Draft     JSON serialization for Web Linking       January 2020
-
-
    is not specified the link context is considered to be the URL of the
    representation it is associated with.
 
@@ -129,6 +157,18 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
    However, implementors of this specification MAY override this.
    Because JSON links may have deeper contextual meaning depending on
    where it appears in the document.
+
+
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 3]
+
+Internet-Draft     JSON serialization for Web Linking      November 2020
+
 
 2.1.4.  Other attributes
 
@@ -160,16 +200,6 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
      "title": "Evert Pot"
    }
 
-
-
-
-
-
-Pot & Sullice             Expires July 12, 2020                 [Page 3]
-
-Internet-Draft     JSON serialization for Web Linking       January 2020
-
-
 2.2.  Lists of links
 
    Authors that wish to encode a set of links in a document, SHOULD use
@@ -178,6 +208,23 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 2.2.1.  Example
 
    This section is non-normative.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 4]
+
+Internet-Draft     JSON serialization for Web Linking      November 2020
+
 
    [
      {
@@ -211,21 +258,6 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
    This section is non-normative.
 
-
-
-
-
-
-
-
-
-
-
-Pot & Sullice             Expires July 12, 2020                 [Page 4]
-
-Internet-Draft     JSON serialization for Web Linking       January 2020
-
-
    {
      "links": [
        {
@@ -239,6 +271,16 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
        }
      ]
    }
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 5]
+
+Internet-Draft     JSON serialization for Web Linking      November 2020
+
 
 3.  IANA considerations
 
@@ -274,14 +316,6 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
               Nottingham, M., "Home Documents for HTTP APIs", n.d.,
               <https://tools.ietf.org/html/draft-nottingham-json-home>.
 
-
-
-
-Pot & Sullice             Expires July 12, 2020                 [Page 5]
-
-Internet-Draft     JSON serialization for Web Linking       January 2020
-
-
    [JSON-API]
               "JSON:API", n.d., <https://jsonapi.org/format/>.
 
@@ -292,6 +326,17 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
    [WEBTHING]
               Ben Francis, ., "Web Thing API", n.d.,
               <https://iot.mozilla.org/wot/>.
+
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 6]
+
+Internet-Draft     JSON serialization for Web Linking      November 2020
+
 
 Appendix A.  Typescript definitions
 
@@ -333,9 +378,20 @@ B.1.  Link
 
 
 
-Pot & Sullice             Expires July 12, 2020                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+Pot & Sullice              Expires May 5, 2021                  [Page 7]
 
-Internet-Draft     JSON serialization for Web Linking       January 2020
+Internet-Draft     JSON serialization for Web Linking      November 2020
 
 
    {
@@ -389,9 +445,9 @@ Authors' Addresses
 
 
 
-Pot & Sullice             Expires July 12, 2020                 [Page 7]
+Pot & Sullice              Expires May 5, 2021                  [Page 8]
 
-Internet-Draft     JSON serialization for Web Linking       January 2020
+Internet-Draft     JSON serialization for Web Linking      November 2020
 
 
    Gabriel Sullice
@@ -445,4 +501,4 @@ Internet-Draft     JSON serialization for Web Linking       January 2020
 
 
 
-Pot & Sullice             Expires July 12, 2020                 [Page 8]
+Pot & Sullice              Expires May 5, 2021                  [Page 9]
